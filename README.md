@@ -1,14 +1,13 @@
 ## DataHarvest
 - Sistema de integração massiva de dados com Oracle DB
-- Sincronização eficiente de 200K+ registros
 - Java 21
 - Spring Batch
 - Oracle Database
 - JPA
-- Hibernate (auto-ddl)
+- Hibernate
 - Swagger
 - Lombok
-- Open Library API (openlibrary.org)
+- Open Library API
 
 
 ### Extração de dados
@@ -42,7 +41,7 @@ public class Book {
     private UUID id;
     private String refKey; // UNIQUE (REF UPDATE)
     private String title;
-    private List<Author> authors;
+    private Set<Author> authors;
 }
 
 public class Author {
