@@ -31,7 +31,7 @@ public class BookController {
 
     @PostMapping
     public ResponseEntity<BookSaveDTO> create(@RequestBody BookSaveDTO book) {
-        return bookService.create(book);
+        return bookService.sync(book);
     }
 
 }

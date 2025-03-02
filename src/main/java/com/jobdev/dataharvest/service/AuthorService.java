@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.jobdev.dataharvest.model.dto.AuthorFindDTO;
 import com.jobdev.dataharvest.model.dto.AuthorSaveDTO;
+import com.jobdev.dataharvest.model.entity.Author;
 import com.jobdev.dataharvest.repository.AuthorRepository;
 
 import lombok.AllArgsConstructor;
@@ -31,11 +32,22 @@ public class AuthorService {
         }
     }
 
-    public ResponseEntity<AuthorSaveDTO> create(AuthorSaveDTO authorSaveDTO) {
+    public Author sync(AuthorSaveDTO authorSaveDTO) {
         try {
-            var author = authorRepository.save(authorSaveDTO.toEntity());
-            var responseBody = AuthorSaveDTO.fromEntity(author);
-            return ResponseEntity.ok(responseBody);
+            var existingAuthor = authorRepository.findByRefKey(authorSaveDTO.getRefKey());
+
+            Author author;
+            if (existingAuthor.isPresent()) {
+                author = existingAuthor.get();
+                if (authorSaveDTO.getName() != null && !authorSaveDTO.getName().isEmpty()) {
+                    author.setName(authorSaveDTO.getName());
+                }
+            } else {
+                author = authorSaveDTO.toEntity();
+            }
+
+            var savedAuthor = authorRepository.save(author);
+            return savedAuthor;
 
         } catch (Exception e) {
             throw e;

@@ -1,6 +1,5 @@
 package com.jobdev.dataharvest.service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,12 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobdev.dataharvest.model.dto.AuthorSaveDTO;
 import com.jobdev.dataharvest.model.dto.BookFindDTO;
 import com.jobdev.dataharvest.model.dto.BookSaveDTO;
-import com.jobdev.dataharvest.model.entity.Author;
 import com.jobdev.dataharvest.model.entity.Book;
-import com.jobdev.dataharvest.repository.AuthorRepository;
 import com.jobdev.dataharvest.repository.BookRepository;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +21,7 @@ import lombok.AllArgsConstructor;
 public class BookService {
 
     private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
+    private final AuthorService authorService;
 
     public ResponseEntity<List<BookFindDTO>> find(@PageableDefault Pageable pageable) {
         try {
@@ -39,38 +35,24 @@ public class BookService {
     }
 
     @Transactional
-    public ResponseEntity<BookSaveDTO> create(BookSaveDTO bookSaveDTO) {
+    public ResponseEntity<BookSaveDTO> sync(BookSaveDTO bookSaveDTO) {
         try {
-            Book bookEntity = Book.builder()
-                    .refKey(bookSaveDTO.getRefKey())
-                    .title(bookSaveDTO.getTitle())
-                    .authors(new HashSet<Author>())
-                    .build();
-            
-            if (bookSaveDTO.getAuthors() != null && !bookSaveDTO.getAuthors().isEmpty()) {
-                for (AuthorSaveDTO authorDTO : bookSaveDTO.getAuthors()) {
-                    var existingAuthor = authorRepository.findByRefKey(authorDTO.getRefKey());
-                    
-                    Author author;
-                    if (existingAuthor.isPresent()) {
-                        author = existingAuthor.get();
-                        
-                        if (authorDTO.getName() != null && !authorDTO.getName().isEmpty()) {
-                            author.setName(authorDTO.getName());
-                            author = authorRepository.save(author);
-                        }
-                    } else {
-                        author = authorDTO.toEntity();
-                        author = authorRepository.save(author);
-                    }
-                    
-                    bookEntity.getAuthors().add(author);
+            var existingBook = bookRepository.findByRefKey(bookSaveDTO.getRefKey());
+
+            Book book;
+            if (existingBook.isPresent()) {
+                book = existingBook.get();
+                if (bookSaveDTO.getTitle() != null && !bookSaveDTO.getTitle().isEmpty()) {
+                    book.setTitle(bookSaveDTO.getTitle());
                 }
+            } else {
+                book = bookSaveDTO.toEntity();
             }
-            
-            Book savedBook = bookRepository.save(bookEntity);
-            
-            BookSaveDTO responseBody = BookSaveDTO.fromEntity(savedBook);
+            var authors = bookSaveDTO.getAuthors().stream().map(authorService::sync).collect(Collectors.toSet());
+            book.setAuthors(authors);
+
+            var savedBook = bookRepository.save(book);
+            var responseBody = BookSaveDTO.fromEntity(savedBook);
             return ResponseEntity.ok(responseBody);
 
         } catch (Exception e) {
