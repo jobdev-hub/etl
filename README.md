@@ -1,7 +1,7 @@
 ## DataHarvest
 - Sistema de integração massiva de dados com Oracle DB
 - Java 21
-- Spring Batch
+- Spring Batch (PENDENTE)
 - Oracle Database
 - JPA
 - Hibernate
