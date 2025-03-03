@@ -21,4 +21,17 @@ public class OpenLibraryAuthorDTO {
         String prefix = "/authors/";
         return key.startsWith(prefix) ? key.substring(prefix.length()) : key;
     }
+
+    /**
+     * Retorna o nome do autor considerando 255 caracteres no máximo
+     * 
+     * @return nome do autor
+     */
+    public String getName() {
+        if (name == null) {
+            return null;
+        }
+
+        return name.length() > 255 ? name.substring(0, 255) : name;
+    }
 }

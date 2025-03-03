@@ -24,4 +24,17 @@ public class OpenLibraryWorkDTO {
         String prefix = "/works/";
         return key.startsWith(prefix) ? key.substring(prefix.length()) : key;
     }
+
+    /**
+     * Retorna o título da obra considerando 1000 caracteres no máximo
+     * 
+     * @return título da obra
+     */
+    public String getTitle() {
+        if (title == null) {
+            return null;
+        }
+
+        return title.length() > 1000 ? title.substring(0, 1000) : title;
+    }
 }
