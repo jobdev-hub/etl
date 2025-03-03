@@ -36,7 +36,7 @@ public class Book {
     @Column(name = "ref_key", unique = true, updatable = false, nullable = false)
     private String refKey;
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 1000)
     private String title;
 
     @ManyToMany(cascade = { CascadeType.MERGE })
