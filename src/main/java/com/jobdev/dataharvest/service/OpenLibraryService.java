@@ -16,6 +16,7 @@ import com.jobdev.dataharvest.model.dto.BookSaveDTO;
 import com.jobdev.dataharvest.model.dto.OpenLibraryAuthorDTO;
 import com.jobdev.dataharvest.model.dto.OpenLibraryResponseDTO;
 import com.jobdev.dataharvest.model.dto.OpenLibraryWorkDTO;
+import com.jobdev.dataharvest.util.ThreadUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class OpenLibraryService {
     private final BookService bookService;
 
     @Value("${integration.openlibrary.url:https://openlibrary.org}")
-    private String openLibraryBaseUrl;
+    private String baseUrl;
 
     /**
      * Sincroniza todos os livros de um determinado assunto
@@ -56,7 +57,7 @@ public class OpenLibraryService {
                 logProgress(totalProcessed.get(), totalBooks);
 
                 // Pausa entre requisições
-                sleepBetweenRequests(500);
+                ThreadUtil.sleep(500);
             }
 
             log.info("Sincronização completa! Total de livros processados: {}/{}", totalProcessed.get(), totalBooks);
@@ -68,26 +69,23 @@ public class OpenLibraryService {
     }
 
     private int getTotalBookCount(String subject) {
-        var url = String.format("%s/subjects/%s.json?limit=0", openLibraryBaseUrl, subject);
+        var url = String.format("%s/subjects/%s.json?limit=0", baseUrl, subject);
         log.info("Consultando total de livros: {}", url);
 
         try {
             var response = restTemplate.getForEntity(url, OpenLibraryResponseDTO.class);
 
-            // Verifica o status HTTP
             if (!response.getStatusCode().is2xxSuccessful()) {
                 log.error("API retornou status de erro: {}", response.getStatusCode());
                 throw new RuntimeException("API retornou status de erro: " + response.getStatusCode());
             }
 
-            // Usa Optional para tratar o body com mais segurança
             OpenLibraryResponseDTO body = Optional.ofNullable(response.getBody())
                     .orElseThrow(() -> {
                         log.error("Resposta inválida da API ao consultar total de livros");
                         return new RuntimeException("Resposta inválida da API");
                     });
 
-            // Usa Optional para tratar o workCount com segurança
             Integer workCount = Optional.ofNullable(body.getWork_count())
                     .orElseThrow(() -> {
                         log.error("Contagem de trabalhos nula na resposta da API");
@@ -107,8 +105,7 @@ public class OpenLibraryService {
         int currentLimit = Math.min(batchSize, totalBooks - offset);
         log.info("Sincronizando lote: offset={}, limit={}", offset, currentLimit);
 
-        var url = String.format("%s/subjects/%s.json?limit=%d&offset=%d",
-                openLibraryBaseUrl, subject, currentLimit, offset);
+        var url = String.format("%s/subjects/%s.json?limit=%d&offset=%d", baseUrl, subject, currentLimit, offset);
 
         try {
             var response = restTemplate.getForEntity(url, OpenLibraryResponseDTO.class);
@@ -133,16 +130,7 @@ public class OpenLibraryService {
     private void logProgress(int processed, int total) {
         double percentage = (processed * 100.0) / total;
         String formattedPercentage = String.format("%.2f", percentage);
-        log.info("Progresso: {}/{} livros sincronizados ({}%)",
-                processed, total, formattedPercentage);
-    }
-
-    private void sleepBetweenRequests(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        log.info("Progresso: {}/{} livros sincronizados ({}%)", processed, total, formattedPercentage);
     }
 
     /**

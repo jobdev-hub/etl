@@ -10,12 +10,12 @@ import lombok.Data;
 @Data
 @Builder
 public class BookFindDTO {
-    private String tittle;
+    private String title;
     private Set<AuthorFindDTO> authors;
 
     public static BookFindDTO fromEntity(Book book) {
         return BookFindDTO.builder()
-                .tittle(book.getTitle())
+                .title(book.getTitle())
                 .authors(AuthorFindDTO.fromEntities(book.getAuthors()))
                 .build();
     }
