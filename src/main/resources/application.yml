@@ -21,3 +21,7 @@ springdoc:
     path: /swagger-ui.html
   api-docs:
     path: /api-docs
+
+integration:
+  openlibrary:
+    url: https://openlibrary.org

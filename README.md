@@ -11,7 +11,7 @@
 
 
 ### Extração de dados
-GET https://openlibrary.org/subjects/programming.json?limit=1000
+GET https://openlibrary.org/subjects/programming.json?limit=100
 
 - Exemplo de resposta (removendo alguns campos)
 ```json
