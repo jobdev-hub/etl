@@ -18,12 +18,16 @@ public class SyncController {
     private final OpenLibraryService openLibraryService;
 
     @PostMapping("open-library/books")
-    public ResponseEntity<String> syncBooks(
-            @RequestParam(required = true, defaultValue = "100") int limit,
-            @RequestParam(required = true) String subject) {
-
-        openLibraryService.syncBooks(limit, "");
-        return ResponseEntity.ok("Sincronização iniciada para " + limit + " livros de programação");
+    public ResponseEntity<String> syncAllBooks(
+            @RequestParam(defaultValue = "programming") String subject,
+            @RequestParam(defaultValue = "1000") int batchSize) {
+            
+        // Este método é executado de forma assíncrona para não bloquear a resposta HTTP
+        new Thread(() -> {
+            openLibraryService.syncAllBooks(subject, batchSize);
+        }).start();
+        
+        return ResponseEntity.ok("Sincronização completa iniciada para todos os livros de " + subject + 
+                " (processando em lotes de " + batchSize + ")");
     }
-
 }
