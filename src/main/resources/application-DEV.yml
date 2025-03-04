@@ -15,6 +15,15 @@ spring:
     open-in-view: true
   jackson:
     default-property-inclusion: NON_NULL
+  batch:
+    job:
+      enabled: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
 
 springdoc:
   swagger-ui:
