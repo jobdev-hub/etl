@@ -7,3 +7,8 @@ services:
       - "1521:1521"
     environment:
       - ORACLE_PWD=root
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+
+volumes:
+  oracle-data:
