@@ -1,8 +1,8 @@
-package com.jobdev.dataharvest.model.dto;
+package com.jobdev.dataharvest.dto;
 
 import java.util.Set;
 
-import com.jobdev.dataharvest.model.entity.Book;
+import com.jobdev.dataharvest.entity.Book;
 
 import lombok.Builder;
 import lombok.Data;

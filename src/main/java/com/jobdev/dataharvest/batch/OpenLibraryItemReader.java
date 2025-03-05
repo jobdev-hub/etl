@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.jobdev.dataharvest.model.dto.OpenLibraryResponseDTO;
-import com.jobdev.dataharvest.model.dto.OpenLibraryWorkDTO;
+import com.jobdev.dataharvest.dto.OpenLibraryResponseDTO;
+import com.jobdev.dataharvest.dto.OpenLibraryWorkDTO;
 import com.jobdev.dataharvest.util.ThreadUtil;
 
 import lombok.extern.slf4j.Slf4j;

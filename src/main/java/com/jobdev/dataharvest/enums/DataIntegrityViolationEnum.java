@@ -1,4 +1,4 @@
-package com.jobdev.dataharvest.model.enums;
+package com.jobdev.dataharvest.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

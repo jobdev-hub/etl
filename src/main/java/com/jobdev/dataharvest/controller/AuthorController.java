@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobdev.dataharvest.model.dto.AuthorFindDTO;
+import com.jobdev.dataharvest.dto.AuthorFindDTO;
 import com.jobdev.dataharvest.service.AuthorService;
 
 import lombok.AllArgsConstructor;

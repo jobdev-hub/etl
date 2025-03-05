@@ -1,4 +1,4 @@
-package com.jobdev.dataharvest.model.dto;
+package com.jobdev.dataharvest.dto;
 
 import lombok.Data;
 

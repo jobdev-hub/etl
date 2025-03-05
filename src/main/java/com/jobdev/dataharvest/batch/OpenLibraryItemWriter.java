@@ -5,7 +5,7 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import com.jobdev.dataharvest.model.dto.BookSaveDTO;
+import com.jobdev.dataharvest.dto.BookSaveDTO;
 import com.jobdev.dataharvest.service.BookService;
 
 import lombok.RequiredArgsConstructor;

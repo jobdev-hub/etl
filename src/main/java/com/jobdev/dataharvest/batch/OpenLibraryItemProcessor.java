@@ -9,10 +9,10 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import com.jobdev.dataharvest.model.dto.AuthorSaveDTO;
-import com.jobdev.dataharvest.model.dto.BookSaveDTO;
-import com.jobdev.dataharvest.model.dto.OpenLibraryAuthorDTO;
-import com.jobdev.dataharvest.model.dto.OpenLibraryWorkDTO;
+import com.jobdev.dataharvest.dto.AuthorSaveDTO;
+import com.jobdev.dataharvest.dto.BookSaveDTO;
+import com.jobdev.dataharvest.dto.OpenLibraryAuthorDTO;
+import com.jobdev.dataharvest.dto.OpenLibraryWorkDTO;
 
 import lombok.extern.slf4j.Slf4j;
 

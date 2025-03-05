@@ -9,9 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobdev.dataharvest.model.dto.BookFindDTO;
-import com.jobdev.dataharvest.model.dto.BookSaveDTO;
-import com.jobdev.dataharvest.model.entity.Book;
+import com.jobdev.dataharvest.dto.BookFindDTO;
+import com.jobdev.dataharvest.dto.BookSaveDTO;
+import com.jobdev.dataharvest.entity.Book;
 import com.jobdev.dataharvest.repository.BookRepository;
 
 import lombok.AllArgsConstructor;

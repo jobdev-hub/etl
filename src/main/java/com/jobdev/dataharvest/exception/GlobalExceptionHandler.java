@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import com.jobdev.dataharvest.model.dto.ResponseErrorDTO;
-import com.jobdev.dataharvest.model.enums.DataIntegrityViolationEnum;
+import com.jobdev.dataharvest.dto.ResponseErrorDTO;
+import com.jobdev.dataharvest.enums.DataIntegrityViolationEnum;
 
 import lombok.extern.slf4j.Slf4j;
 

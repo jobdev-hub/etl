@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobdev.dataharvest.model.dto.BookFindDTO;
+import com.jobdev.dataharvest.dto.BookFindDTO;
 import com.jobdev.dataharvest.service.BookService;
 
 import lombok.AllArgsConstructor;

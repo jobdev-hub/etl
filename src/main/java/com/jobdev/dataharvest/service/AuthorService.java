@@ -8,9 +8,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.jobdev.dataharvest.model.dto.AuthorFindDTO;
-import com.jobdev.dataharvest.model.dto.AuthorSaveDTO;
-import com.jobdev.dataharvest.model.entity.Author;
+import com.jobdev.dataharvest.dto.AuthorFindDTO;
+import com.jobdev.dataharvest.dto.AuthorSaveDTO;
+import com.jobdev.dataharvest.entity.Author;
 import com.jobdev.dataharvest.repository.AuthorRepository;
 
 import lombok.AllArgsConstructor;

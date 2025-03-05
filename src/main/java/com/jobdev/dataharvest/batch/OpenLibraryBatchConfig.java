@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.jobdev.dataharvest.model.dto.BookSaveDTO;
-import com.jobdev.dataharvest.model.dto.OpenLibraryWorkDTO;
+import com.jobdev.dataharvest.dto.BookSaveDTO;
+import com.jobdev.dataharvest.dto.OpenLibraryWorkDTO;
 
 import lombok.RequiredArgsConstructor;
 

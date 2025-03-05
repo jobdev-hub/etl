@@ -1,4 +1,4 @@
-package com.jobdev.dataharvest.model.entity;
+package com.jobdev.dataharvest.entity;
 
 import java.util.Set;
 import java.util.UUID;
