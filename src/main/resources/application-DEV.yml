@@ -1,9 +1,4 @@
 spring:
-  datasource:
-    url: jdbc:oracle:thin:@localhost:1521/XEPDB1
-    username: API
-    password: api123
-    driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     show-sql: false
     properties:
@@ -18,12 +13,20 @@ spring:
   batch:
     job:
       enabled: false
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
+    jdbc:
+      initialize-schema: never
+
+app:
+  datasource:
+    oracle:
+      url: jdbc:oracle:thin:@localhost:1521/XEPDB1
+      driver-class-name: oracle.jdbc.OracleDriver
+      main:
+        username: APP_MAIN
+        password: APP_MAIN_123
+      batch:
+        username: APP_BATCH
+        password: APP_BATCH_123
 
 springdoc:
   swagger-ui:

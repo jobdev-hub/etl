@@ -2,41 +2,62 @@ package com.jobdev.dataharvest.config;
 
 import javax.sql.DataSource;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.batch.BatchDataSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 @Configuration
 public class DataSourceConfig {
 
-    // DataSource persistencia principal
+    // DataSource principal (APP_MAIN)
     @Primary
     @Bean
-    @ConfigurationProperties("spring.datasource")
-    public DataSourceProperties dataSourceProperties() {
+    @ConfigurationProperties("app.datasource.oracle")
+    public DataSourceProperties mainDataSourceProperties() {
         return new DataSourceProperties();
     }
 
     @Primary
     @Bean
-    public DataSource dataSource(DataSourceProperties properties) {
-        return properties.initializeDataSourceBuilder().build();
+    @ConfigurationProperties("app.datasource.oracle.main")
+    public DataSource mainDataSource() {
+        return mainDataSourceProperties()
+                .initializeDataSourceBuilder()
+                .build();
     }
 
-    // DataSource spring batch (em memória)
+    // DataSource batch (APP_BATCH)
+    @Bean
+    @ConfigurationProperties("app.datasource.oracle")
+    public DataSourceProperties batchDataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
     @Bean("batchDataSource")
     @BatchDataSource
+    @ConfigurationProperties("app.datasource.oracle.batch")
     public DataSource batchDataSource() {
-        return new EmbeddedDatabaseBuilder()
-                .setType(EmbeddedDatabaseType.H2)
-                .addScript("/org/springframework/batch/core/schema-drop-h2.sql")
-                .addScript("/org/springframework/batch/core/schema-h2.sql")
-                .generateUniqueName(true)
+        return batchDataSourceProperties()
+                .initializeDataSourceBuilder()
                 .build();
+    }
+
+    @Bean
+    public DataSourceInitializer batchDataSourceInitializer(@Qualifier("batchDataSource") DataSource batchDataSource) {
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+        databasePopulator.addScript(new ClassPathResource("org/springframework/batch/core/schema-oracle.sql"));
+        databasePopulator.setContinueOnError(true);
+
+        DataSourceInitializer initializer = new DataSourceInitializer();
+        initializer.setDataSource(batchDataSource);
+        initializer.setDatabasePopulator(databasePopulator);
+        return initializer;
     }
 }
