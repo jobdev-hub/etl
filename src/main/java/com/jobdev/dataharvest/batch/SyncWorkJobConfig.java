@@ -23,7 +23,7 @@ public class SyncWorkJobConfig {
     private final SyncWorkProcessor syncWorkProcessor;
     private final SyncWorkWriter syncWorkWriter;
     
-    private static final int CHUNK_SIZE = 200;
+    private static final int CHUNK_SIZE = 500;
     private static final int SKIP_LIMIT = 10;
     private static final String STEP_NAME = "syncWorkStep";
 

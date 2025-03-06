@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobdev.dataharvest.enums.JobName;
-import com.jobdev.dataharvest.service.SyncWorkService;
+import com.jobdev.dataharvest.service.JobSyncWorkService;
 import com.jobdev.dataharvest.util.ThreadUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/job")
 @RequiredArgsConstructor
-public class SyncController {
-    private final SyncWorkService openLibraryService;
+public class JobController {
+    private final JobSyncWorkService jobSyncWorkService;
     private final JobExplorer jobExplorer;
 
     @PostMapping("/sync-works")
@@ -35,7 +35,7 @@ public class SyncController {
             @RequestParam(defaultValue = "programming") String subject,
             @RequestParam(defaultValue = "1000") int batchSize) {
 
-        ThreadUtil.runAsync(() -> openLibraryService.syncWorks(subject, batchSize));
+        ThreadUtil.runAsync(() -> jobSyncWorkService.syncWorks(subject, batchSize));
         return ResponseEntity.ok("Sincronização iniciada para " + subject + " (lotes de " + batchSize + ")");
     }
 
