@@ -28,15 +28,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(responseError);
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleDataIntegrityViolation(DataIntegrityViolationException e, WebRequest request) {
-        log.error("DataIntegrityViolationException: {}", e.getMessage());
-        var status = HttpStatus.CONFLICT;
-        var message = "integrity violation: " + DataIntegrityViolationEnum.fromErrorMessage(e.getMessage()).getDetail();
-        var responseError = getResponseError(message, request, status);
-        return ResponseEntity.status(status).body(responseError);
-    }
-
     private ResponseErrorDTO getResponseError(String message, WebRequest request, HttpStatus status) {
         ResponseErrorDTO responseError = ResponseErrorDTO.builder()
                 .timestamp(LocalDateTime.now())
