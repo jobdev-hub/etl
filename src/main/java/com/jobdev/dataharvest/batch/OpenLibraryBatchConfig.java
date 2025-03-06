@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import com.jobdev.dataharvest.dto.BookSaveDTO;
 import com.jobdev.dataharvest.dto.OpenLibraryWorkDTO;
+import com.jobdev.dataharvest.dto.WorkSaveDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +33,7 @@ public class OpenLibraryBatchConfig {
     @Bean
     public Step openLibraryStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("openLibraryStep", jobRepository)
-                .<OpenLibraryWorkDTO, BookSaveDTO>chunk(CHUNK_SIZE, transactionManager)
+                .<OpenLibraryWorkDTO, WorkSaveDTO>chunk(CHUNK_SIZE, transactionManager)
                 .reader(openLibraryReader)
                 .processor(openLibraryProcessor)
                 .writer(openLibraryWriter)

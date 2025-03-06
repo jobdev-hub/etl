@@ -37,7 +37,7 @@ GET https://openlibrary.org/subjects/programming.json?limit=1000
 
 ### Carregamento de dados
 ```Java
-public class Book {
+public class Work {
     private UUID id;
     private String refKey; // UNIQUE (REF UPDATE)
     private String title;

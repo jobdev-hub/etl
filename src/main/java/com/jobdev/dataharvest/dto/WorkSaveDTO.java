@@ -2,26 +2,26 @@ package com.jobdev.dataharvest.dto;
 
 import java.util.Set;
 
-import com.jobdev.dataharvest.entity.Book;
+import com.jobdev.dataharvest.entity.Work;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class BookSaveDTO {
+public class WorkSaveDTO {
     private String refKey;
     private String title;
     private Set<AuthorSaveDTO> authors;
 
-    public static BookSaveDTO fromEntity(Book book) {
-        return BookSaveDTO.builder()
-                .refKey(book.getRefKey())
+    public static WorkSaveDTO fromEntity(Work work) {
+        return WorkSaveDTO.builder()
+                .refKey(work.getRefKey())
                 .build();
     }
 
-    public Book toEntity() {
-        return Book.builder()
+    public Work toEntity() {
+        return Work.builder()
                 .refKey(this.getRefKey())
                 .title(this.getTitle())
                 .authors(AuthorSaveDTO.toEntities(this.getAuthors()))

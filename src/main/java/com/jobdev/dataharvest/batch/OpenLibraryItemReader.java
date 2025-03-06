@@ -27,7 +27,7 @@ public class OpenLibraryItemReader implements ItemReader<OpenLibraryWorkDTO> {
     private int offset = 0;
     private final int batchSize;
     private String subject;
-    private int totalBooks;
+    private int totalWorks;
     private boolean initialized = false;
 
     @Value("${integration.openlibrary.url:https://openlibrary.org}")
@@ -43,9 +43,9 @@ public class OpenLibraryItemReader implements ItemReader<OpenLibraryWorkDTO> {
     public void initialize(String subject, int batchSize) {
         this.subject = subject;
         this.offset = 0;
-        this.totalBooks = getTotalBookCount(subject);
+        this.totalWorks = getTotalWorkCount(subject);
         this.initialized = true;
-        log.info("ItemReader inicializado para {} - total de livros: {}", subject, totalBooks);
+        log.info("ItemReader inicializado para {} - total de livros: {}", subject, totalWorks);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class OpenLibraryItemReader implements ItemReader<OpenLibraryWorkDTO> {
         // Se precisamos buscar mais livros
         if (nextWorkIndex.get() >= worksList.size()) {
             // Se já lemos todos os livros disponíveis
-            if (offset >= totalBooks) {
+            if (offset >= totalWorks) {
                 return null; // Sinaliza o fim do processamento para o Spring Batch
             }
 
@@ -74,7 +74,7 @@ public class OpenLibraryItemReader implements ItemReader<OpenLibraryWorkDTO> {
     }
 
     private void fetchNextBatch() {
-        int currentLimit = Math.min(batchSize, totalBooks - offset);
+        int currentLimit = Math.min(batchSize, totalWorks - offset);
         log.info("Sincronizando lote: offset={}, limit={}", offset, currentLimit);
 
         var url = String.format("%s/subjects/%s.json?limit=%d&offset=%d", baseUrl, subject, currentLimit, offset);
@@ -93,7 +93,7 @@ public class OpenLibraryItemReader implements ItemReader<OpenLibraryWorkDTO> {
         }
     }
 
-    private int getTotalBookCount(String subject) {
+    private int getTotalWorkCount(String subject) {
         var url = String.format("%s/subjects/%s.json?limit=0", baseUrl, subject);
         log.info("Consultando total de livros: {}", url);
 
@@ -111,7 +111,7 @@ public class OpenLibraryItemReader implements ItemReader<OpenLibraryWorkDTO> {
                         return new RuntimeException("Resposta inválida da API");
                     });
 
-            Integer workCount = Optional.ofNullable(body.getWork_count())
+            Integer workCount = Optional.ofNullable(body.getWorkCount())
                     .orElseThrow(() -> {
                         log.error("Contagem de trabalhos nula na resposta da API");
                         return new RuntimeException("Resposta inválida da API - contagem nula");
@@ -130,7 +130,7 @@ public class OpenLibraryItemReader implements ItemReader<OpenLibraryWorkDTO> {
         worksList = works;
         nextWorkIndex.set(0);
         offset += worksList.size();
-        log.info("Recebidos {} livros (total processado: {}/{})", worksList.size(), offset, totalBooks);
+        log.info("Recebidos {} livros (total processado: {}/{})", worksList.size(), offset, totalWorks);
         ThreadUtil.sleep(500);
     }
 

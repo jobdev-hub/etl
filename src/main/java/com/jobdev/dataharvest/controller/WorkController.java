@@ -9,21 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobdev.dataharvest.dto.BookFindDTO;
-import com.jobdev.dataharvest.service.BookService;
+import com.jobdev.dataharvest.dto.WorkFindDTO;
+import com.jobdev.dataharvest.service.WorkService;
 
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/work")
 @AllArgsConstructor
-public class BookController {
+public class WorkController {
 
-    private final BookService bookService;
+    private final WorkService workService;
 
     @GetMapping
-    public ResponseEntity<List<BookFindDTO>> find(@PageableDefault Pageable pageable) {
-        return bookService.find(pageable);
+    public ResponseEntity<List<WorkFindDTO>> find(@PageableDefault Pageable pageable) {
+        return workService.find(pageable);
     }
 
 }

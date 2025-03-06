@@ -25,16 +25,16 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/sync")
 @RequiredArgsConstructor
-public class SyncController {
+public class OpenLibrarySyncController {
     private final OpenLibraryService openLibraryService;
     private final JobExplorer jobExplorer;
 
-    @PostMapping("/open-library/books-and-authors")
-    public ResponseEntity<String> syncAllBooks(
+    @PostMapping("/open-library/works-and-authors")
+    public ResponseEntity<String> syncAllWorks(
             @RequestParam(defaultValue = "programming") String subject,
             @RequestParam(defaultValue = "1000") int batchSize) {
 
-        ThreadUtil.runAsync(() -> openLibraryService.syncAllBooks(subject, batchSize));
+        ThreadUtil.runAsync(() -> openLibraryService.syncAllWorks(subject, batchSize));
         return ResponseEntity.ok("Sincronização iniciada para " + subject + " (lotes de " + batchSize + ")");
     }
 

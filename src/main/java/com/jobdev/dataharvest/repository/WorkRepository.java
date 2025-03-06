@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.jobdev.dataharvest.entity.Book;
+import com.jobdev.dataharvest.entity.Work;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, UUID> {
-    Optional<Book> findByRefKey(String refKey);
+public interface WorkRepository extends JpaRepository<Work, UUID> {
+    Optional<Work> findByRefKey(String refKey);
 }

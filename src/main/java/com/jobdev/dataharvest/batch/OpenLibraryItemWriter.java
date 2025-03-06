@@ -5,8 +5,8 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import com.jobdev.dataharvest.dto.BookSaveDTO;
-import com.jobdev.dataharvest.service.BookService;
+import com.jobdev.dataharvest.dto.WorkSaveDTO;
+import com.jobdev.dataharvest.service.WorkService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,23 +14,23 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class OpenLibraryItemWriter implements ItemWriter<BookSaveDTO> {
+public class OpenLibraryItemWriter implements ItemWriter<WorkSaveDTO> {
 
-    private final BookService bookService;
+    private final WorkService workService;
 
     @Override
-    public void write(@NonNull Chunk<? extends BookSaveDTO> chunk) throws Exception {
+    public void write(@NonNull Chunk<? extends WorkSaveDTO> chunk) throws Exception {
         int success = 0;
         int failed = 0;
 
         log.info("Persistindo pedaço do lote de {} livros", chunk.size());
 
-        for (BookSaveDTO book : chunk) {
+        for (WorkSaveDTO work : chunk) {
             try {
-                bookService.sync(book);
+                workService.sync(work);
                 success++;
             } catch (Exception e) {
-                log.error("Erro ao salvar livro: {}", book.getRefKey(), e);
+                log.error("Erro ao salvar livro: {}", work.getRefKey(), e);
                 failed++;
             }
         }

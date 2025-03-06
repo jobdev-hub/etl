@@ -25,7 +25,7 @@ public class OpenLibraryService {
      * @param subject   O assunto a ser sincronizado (ex: "programming")
      * @param batchSize Tamanho do lote por requisição
      */
-    public void syncAllBooks(String subject, int batchSize) {
+    public void syncAllWorks(String subject, int batchSize) {
         try {
             // Inicializa o reader com os parâmetros necessários
             openLibraryItemReader.initialize(subject, batchSize);

@@ -22,11 +22,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
-@Table(name = "books")
+@Table(name = "work")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "refKey")
-public class Book {
+public class Work {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -40,7 +40,7 @@ public class Book {
     private String title;
 
     @ManyToMany(cascade = { CascadeType.MERGE })
-    @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
+    @JoinTable(name = "work_author", joinColumns = @JoinColumn(name = "work_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors;
 
 }

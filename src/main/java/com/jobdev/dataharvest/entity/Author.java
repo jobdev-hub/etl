@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
-@Table(name = "authors")
+@Table(name = "author")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "refKey")
