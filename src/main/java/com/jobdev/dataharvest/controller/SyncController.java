@@ -17,30 +17,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobdev.dataharvest.service.OpenLibraryService;
+import com.jobdev.dataharvest.enums.JobName;
+import com.jobdev.dataharvest.service.SyncWorkService;
 import com.jobdev.dataharvest.util.ThreadUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/sync")
+@RequestMapping("/job")
 @RequiredArgsConstructor
-public class OpenLibrarySyncController {
-    private final OpenLibraryService openLibraryService;
+public class SyncController {
+    private final SyncWorkService openLibraryService;
     private final JobExplorer jobExplorer;
 
-    @PostMapping("/open-library/works-and-authors")
-    public ResponseEntity<String> syncAllWorks(
+    @PostMapping("/sync-works")
+    public ResponseEntity<String> syncWorks(
             @RequestParam(defaultValue = "programming") String subject,
             @RequestParam(defaultValue = "1000") int batchSize) {
 
-        ThreadUtil.runAsync(() -> openLibraryService.syncAllWorks(subject, batchSize));
+        ThreadUtil.runAsync(() -> openLibraryService.syncWorks(subject, batchSize));
         return ResponseEntity.ok("Sincronização iniciada para " + subject + " (lotes de " + batchSize + ")");
     }
 
     @GetMapping("/status")
     public ResponseEntity<List<Map<String, Object>>> getJobStatus() {
-        Set<JobExecution> executions = jobExplorer.findRunningJobExecutions("openLibraryImportJob");
+        Set<JobExecution> executions = jobExplorer.findRunningJobExecutions(JobName.SYNC_WORK.getName());
         List<Map<String, Object>> result = executions.stream()
                 .map(execution -> {
                     Map<String, Object> jobInfo = new HashMap<>();

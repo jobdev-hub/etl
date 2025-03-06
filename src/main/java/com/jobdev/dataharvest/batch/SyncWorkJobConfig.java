@@ -11,34 +11,38 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.jobdev.dataharvest.dto.OpenLibraryWorkDTO;
 import com.jobdev.dataharvest.dto.WorkSaveDTO;
+import com.jobdev.dataharvest.enums.JobName;
 
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-public class OpenLibraryBatchConfig {
+public class SyncWorkJobConfig {
 
-    private final OpenLibraryItemReader openLibraryReader;
-    private final OpenLibraryItemProcessor openLibraryProcessor;
-    private final OpenLibraryItemWriter openLibraryWriter;
+    private final SyncWorkReader syncWorkReader;
+    private final SyncWorkProcessor syncWorkProcessor;
+    private final SyncWorkWriter syncWorkWriter;
+    
     private static final int CHUNK_SIZE = 200;
+    private static final int SKIP_LIMIT = 10;
+    private static final String STEP_NAME = "syncWorkStep";
 
     @Bean
-    public Job openLibraryImportJob(JobRepository jobRepository, Step openLibraryStep) {
-        return new JobBuilder("openLibraryImportJob", jobRepository)
-                .start(openLibraryStep)
+    public Job syncWorkJob(JobRepository jobRepository, Step syncWorkStep) {
+        return new JobBuilder(JobName.SYNC_WORK.getName(), jobRepository)
+                .start(syncWorkStep)
                 .build();
     }
 
     @Bean
-    public Step openLibraryStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-        return new StepBuilder("openLibraryStep", jobRepository)
+    public Step syncWorkStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+        return new StepBuilder(STEP_NAME, jobRepository)
                 .<OpenLibraryWorkDTO, WorkSaveDTO>chunk(CHUNK_SIZE, transactionManager)
-                .reader(openLibraryReader)
-                .processor(openLibraryProcessor)
-                .writer(openLibraryWriter)
+                .reader(syncWorkReader)
+                .processor(syncWorkProcessor)
+                .writer(syncWorkWriter)
                 .faultTolerant()
-                .skipLimit(10)
+                .skipLimit(SKIP_LIMIT)
                 .skip(Exception.class)
                 .build();
     }

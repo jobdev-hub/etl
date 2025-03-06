@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class OpenLibraryItemWriter implements ItemWriter<WorkSaveDTO> {
+public class SyncWorkWriter implements ItemWriter<WorkSaveDTO> {
 
     private final WorkService workService;
 

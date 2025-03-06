@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class OpenLibraryItemProcessor implements ItemProcessor<OpenLibraryWorkDTO, WorkSaveDTO> {
+public class SyncWorkProcessor implements ItemProcessor<OpenLibraryWorkDTO, WorkSaveDTO> {
 
     @Override
     public WorkSaveDTO process(@NonNull OpenLibraryWorkDTO work) throws Exception {

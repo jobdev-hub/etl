@@ -13,12 +13,9 @@
 ### Extração de dados
 GET https://openlibrary.org/subjects/programming.json?limit=1000
 
-- Exemplo de resposta (removendo alguns campos)
+- Exemplo de resposta (removendo campos nao utilizados)
 ```json
 {
-  "key": "/subjects/programming",
-  "name": "programming",
-  "subject_type": "subject",
   "work_count": 9299,
   "works": [
     {
@@ -50,3 +47,13 @@ public class Author {
     private String name;
 }
 ```
+
+## Arquitetura Spring Batch
+
+### Jobs
+- **syncWorkJob**: Realiza a sincronização de obras da Open Library com o banco Oracle
+
+### Fluxo de Dados
+1. **syncWorkReader**: Busca obras da API Open Library em lotes paginados
+2. **syncWorkProcessor**: Converte DTOs da API para objetos de domínio
+3. **syncWorkWriter**: Persiste os dados no banco Oracle
