@@ -1,5 +1,7 @@
 package com.jobdev.dataharvest.repository;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -11,4 +13,5 @@ import com.jobdev.dataharvest.entity.Author;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, UUID> {
     Optional<Author> findByRefKey(String refKey);
+    List<Author> findAllByRefKeyIn(Collection<String> refKeys);
 }

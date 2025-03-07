@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.jobdev.dataharvest.dto.AuthorFindDTO;
-import com.jobdev.dataharvest.dto.AuthorSaveDTO;
-import com.jobdev.dataharvest.entity.Author;
 import com.jobdev.dataharvest.repository.AuthorRepository;
 
 import lombok.AllArgsConstructor;
@@ -31,27 +29,4 @@ public class AuthorService {
             throw e;
         }
     }
-
-    public Author sync(AuthorSaveDTO authorSaveDTO) {
-        try {
-            var existingAuthor = authorRepository.findByRefKey(authorSaveDTO.getRefKey());
-
-            Author author;
-            if (existingAuthor.isPresent()) {
-                author = existingAuthor.get();
-                if (authorSaveDTO.getName() != null && !authorSaveDTO.getName().isEmpty()) {
-                    author.setName(authorSaveDTO.getName());
-                }
-            } else {
-                author = authorSaveDTO.toEntity();
-            }
-
-            var savedAuthor = authorRepository.save(author);
-            return savedAuthor;
-
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
 }

@@ -14,17 +14,10 @@ public class WorkSaveDTO {
     private String title;
     private Set<AuthorSaveDTO> authors;
 
-    public static WorkSaveDTO fromEntity(Work work) {
-        return WorkSaveDTO.builder()
-                .refKey(work.getRefKey())
-                .build();
-    }
-
     public Work toEntity() {
         return Work.builder()
                 .refKey(this.getRefKey())
                 .title(this.getTitle())
-                .authors(AuthorSaveDTO.toEntities(this.getAuthors()))
                 .build();
     }
 }
